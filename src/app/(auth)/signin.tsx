@@ -1,7 +1,9 @@
 import { supabase } from "@/utils/supabase";
+import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { useState } from "react";
 import {
+  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TextInput,
@@ -34,36 +36,47 @@ const SignIn = () => {
         {/* App Title */}
         <Text style={styles.title}>Let’s Grocery</Text>
         <Text style={styles.subtitle}>Login to your account</Text>
-
-        {/* Email Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          placeholderTextColor="#888"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
+        <Image
+          source={require("@/assets/images/appImages/Home.png")}
+          style={{
+            width: 350,
+            height: 350,
+            resizeMode: "contain",
+            borderRadius: 10,
+          }}
         />
 
-        {/* Password Input */}
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          placeholderTextColor="#888"
-          secureTextEntry
-          value={password}
-          onChangeText={setPassword}
-        />
+        <KeyboardAvoidingView>
+          {/* Email Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            placeholderTextColor="#888"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
 
-        {/* Login Button */}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={HandleSignIn}
-          disabled={loading}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+          {/* Password Input */}
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            placeholderTextColor="#888"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+
+          {/* Login Button */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={HandleSignIn}
+            disabled={loading}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
 
         {/* Footer */}
         <Text style={styles.footerText}>
