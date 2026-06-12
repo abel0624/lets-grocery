@@ -2,7 +2,12 @@ import { NativeTabs } from "expo-router/unstable-native-tabs";
 
 export default function TabsLayout() {
   return (
-    <NativeTabs>
+    <NativeTabs
+      backgroundColor="#201c1c"
+      labelStyle={{ color: "white" }}
+      iconColor={{ default: "#fff", selected: "#1a0303" }}
+      indicatorColor="#fff"
+    >
       <NativeTabs.Trigger name="index">
         <NativeTabs.Trigger.Label>Lists</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
@@ -10,8 +15,8 @@ export default function TabsLayout() {
           md={{ default: "list_alt", selected: "list_alt" }}
         />
       </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="lists">
-        <NativeTabs.Trigger.Label>Planner</NativeTabs.Trigger.Label>
+      <NativeTabs.Trigger name="AddItem">
+        <NativeTabs.Trigger.Label>Add Item</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
           sf={{ default: "plus", selected: "plus.circle.fill" }}
           md={{ default: "add_circle", selected: "add_circle_outline" }}

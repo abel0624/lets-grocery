@@ -1,21 +1,23 @@
+import ItemCard from "@/components/ItemCard";
+import ListHeroCard from "@/components/ListHeroCard";
 import SignOutButton from "@/components/sign-out-button";
 import { useShoppingContext } from "@/hooks/use-shopping-context";
 
-import { Button, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
   const shopping = useShoppingContext();
-  const GetItems = async () => {
-    await shopping.GetItems();
-  };
 
-  const ShoppingItems = shopping.shoppingItems;
+  const ShoppingItems = shopping.shoppingItems?.filter(
+    (item) => item.purchased === false,
+  );
 
   const item = {
-    name: "Milk",
-    category: "Dairy",
-    quantity: 3,
-    purchased: false,
+    name: "Coffe",
+    category: "Drink",
+    quantity: 1,
+    purchased: true,
   };
 
   const CreateShoppingItem = async () => {
@@ -23,12 +25,15 @@ export default function Index() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ListHeroCard />
+      <ScrollView style={styles.scrollView}>
+        {ShoppingItems?.map((item) => (
+          <ItemCard item={item} key={item.id} />
+        ))}
+      </ScrollView>
       <SignOutButton />
-      <Button title="Get Items" onPress={() => GetItems()} />
-      <Button title="Log Items" onPress={() => console.log(ShoppingItems)} />
-      <Button title="Create Item" onPress={() => CreateShoppingItem()} />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -36,6 +41,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    padding: 10,
+    backgroundColor: "#201c1c",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  scrollView: {
+    width: "100%",
+    gap: 10,
+    paddingRight: 20,
   },
 });

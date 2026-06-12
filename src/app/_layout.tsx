@@ -26,7 +26,7 @@ export default function RootLayout() {
       <ShoppingProvider>
         <SplashScreenController />
         <RootNavigator />
-        <StatusBar style="auto" />
+        <StatusBar style="inverted" />
       </ShoppingProvider>
     </AuthProvider>
   );

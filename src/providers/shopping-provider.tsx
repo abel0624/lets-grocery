@@ -1,6 +1,6 @@
 import { ShoppingContext } from "@/hooks/use-shopping-context";
 import { supabase } from "@/utils/supabase";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 export type GroceryItem = {
   id: number;
@@ -17,13 +17,18 @@ export type GroceryItems = GroceryItem[];
 
 export default function ShoppingProvider({ children }: PropsWithChildren) {
   const [shoppingItems, setShoppingItems] = useState<GroceryItems>();
+
+  useEffect(() => {
+    GetItems();
+  }, []);
+
   const GetItems = async () => {
     await supabase
       .from("grocery-items")
       .select("*")
+
       .then(({ data, error }) => {
         if (data) {
-          console.log(data);
           setShoppingItems(data);
         }
         if (error) {
@@ -36,19 +41,38 @@ export default function ShoppingProvider({ children }: PropsWithChildren) {
     const newItem = await supabase.from("grocery-items").insert(item);
     console.log(newItem.data);
   };
-  const UpdateItem = async (itemId: string) => {
-    const updatedItem = await supabase
-      .from("grocery-items")
-      .update({ purchased: true })
-      .eq("id", itemId);
-    console.log(updatedItem.data);
+  const UpdateItem = async (
+    itemId: string,
+    operation: string,
+    currValue: number,
+  ) => {
+    if (currValue === 1 && operation === "-") {
+      DeleteItem(itemId);
+      GetItems();
+    } else {
+      await supabase
+        .from("grocery-items")
+        .update({ quantity: operation === "+" ? currValue + 1 : currValue - 1 })
+        .eq("id", itemId);
+    }
+
+    GetItems();
   };
   const DeleteItem = async (itemId: string) => {
     const deletedItem = await supabase
       .from("grocery-items")
       .delete()
       .eq("id", itemId);
+
     console.log("Deleted Item:" + deletedItem.data);
+  };
+  const SetPurchased = async (itemId: string) => {
+    await supabase
+      .from("grocery-items")
+      .update({ purchased: true })
+      .eq("id", itemId);
+
+    GetItems();
   };
 
   return (
@@ -58,6 +82,7 @@ export default function ShoppingProvider({ children }: PropsWithChildren) {
         CreateItem,
         UpdateItem,
         DeleteItem,
+        SetPurchased,
         shoppingItems,
       }}
     >
